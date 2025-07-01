@@ -1,0 +1,23 @@
+services:
+  db:
+    image: postgres:14.5-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - TZ=UTC
+    ports:
+      - "127.0.0.1:5434:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      start_interval: 1s
+      start_period: 10s
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    volumes:
+      - db:/var/lib/postgresql/data
+
+volumes:
+  db:
+    driver: local
